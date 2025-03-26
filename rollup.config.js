@@ -5,9 +5,9 @@ import typescript2 from "rollup-plugin-typescript2";
 
 export default [
 	{
-		input: "src/plugin.ts",
+		input: "src/index.ts",
 		output: {
-			file: "dist/plugin.esm.js",
+			file: "dist/index.esm.js",
 			format: "esm",
 		},
 		plugins: [
@@ -17,11 +17,12 @@ export default [
 			}),
 			terser(),
 		],
+		external: ["magic-string", "clean-css"],
 	},
 	{
-		input: "src/plugin.ts",
+		input: "src/index.ts",
 		output: {
-			file: "dist/plugin.js",
+			file: "dist/index.js",
 			format: "cjs",
 		},
 		watch: false,
@@ -31,10 +32,11 @@ export default [
 			}),
 			terser(),
 		],
+		external: ["magic-string", "clean-css"],
 	},
 	{
-		input: "dist/types/plugin.d.ts",
-		output: [{ file: "dist/plugin.d.ts", format: "es" }],
+		input: "dist/types/index.d.ts",
+		output: [{ file: "dist/index.d.ts", format: "es" }],
 		plugins: [dts()],
 	},
 ];

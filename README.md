@@ -1,18 +1,64 @@
+A very basic Rollup plugin to minify CSS in string templates, for users of
+inline CSS packages e.g. [Goober](https://github.com/cristianbote/goober) or
+[Styled JSX](https://github.com/vercel/styled-jsx).
+
 ### Usage
 
 Install this package in your project:
 
 ```bash
 # via npm
-npm add
+npm add rollup-plugin-mcss
 
 # or pnpm
-pnpm add
+pnpm add rollup-plugin-mcss
 
 # or yarn
-yarn add
+yarn add rollup-plugin-mcss
 ```
 
----
+To instruct the plugin to minify inline CSS, add `##` next to the enclosing
+backticks of the string template:
 
-_&emsp;_
+```ts
+// demo.ts
+
+// for single elements
+const Icon = styled("div")`##
+
+  color: white;
+  ...
+
+##`;
+
+// with selectors
+document.head.insertAdjacentHTML(
+  "beforeend",
+  `<style>${`##
+
+    .global {
+        ...
+    }
+    ...
+
+  ##`}</style>`,
+);
+
+// with template substitutions
+const Colored = styled("div")`##
+
+  color: ${color};
+  ...
+
+##`;
+
+// in fact, it works with ANY templates with CSS
+```
+
+> Use with caution: This plugin relies on RegExp but not AST to match template
+> strings, so there's no guarantee. However, this is usually safe.
+
+> This plugin uses [Clean CSS](https://github.com/clean-css/clean-css) with
+> level 2 minification.
+
+Have fun with this stupid little plugin.

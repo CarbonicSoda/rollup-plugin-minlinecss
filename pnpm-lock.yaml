@@ -7,18 +7,28 @@ settings:
 importers:
 
   .:
+    dependencies:
+      clean-css:
+        specifier: ^5.3.3
+        version: 5.3.3
+      magic-string:
+        specifier: ^0.30.17
+        version: 0.30.17
     devDependencies:
       '@rollup/plugin-terser':
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.37.0)
+      '@types/clean-css':
+        specifier: ^4.2.11
+        version: 4.2.11
       rollup:
-        specifier: ^4.35.0
+        specifier: ^4.37.0
         version: 4.37.0
       rollup-plugin-delete:
         specifier: ^3.0.1
         version: 3.0.1(rollup@4.37.0)
       rollup-plugin-dts:
-        specifier: ^6.2.0
+        specifier: ^6.2.1
         version: 6.2.1(rollup@4.37.0)(typescript@5.8.2)
       rollup-plugin-typescript2:
         specifier: ^0.36.0
@@ -187,8 +197,14 @@ packages:
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
 
+  '@types/clean-css@4.2.11':
+    resolution: {integrity: sha512-Y8n81lQVTAfP2TOdtJJEsCoYl1AnOkqDqMvXb9/7pfgZZ7r8YrEyurrAvAoAjHOGXKRybay+5CsExqIH6liccw==}
+
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
+
+  '@types/node@22.13.13':
+    resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
 
   acorn@8.14.1:
     resolution: {integrity: sha512-OvQ/2pUDKmgfCg++xsTX1wGxfTaszcHVcTctW4UJB4hibJx2HXxxO5UmVgyjMa+ZDsiaf5wWLXYpRWMmBI0QHg==}
@@ -201,6 +217,10 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
+
+  clean-css@5.3.3:
+    resolution: {integrity: sha512-D5J+kHaVb/wKSFcyyV75uCn8fiY4sV38XJoe4CUyGQ+mOU/fMVYUdH1hJC+CJQ5uY3EnW27SbJYS4X8BiLrAFg==}
+    engines: {node: '>= 10.0'}
 
   commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -421,6 +441,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@6.20.0:
+    resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
+
   unicorn-magic@0.3.0:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
     engines: {node: '>=18'}
@@ -550,7 +573,16 @@ snapshots:
 
   '@sindresorhus/merge-streams@2.3.0': {}
 
+  '@types/clean-css@4.2.11':
+    dependencies:
+      '@types/node': 22.13.13
+      source-map: 0.6.1
+
   '@types/estree@1.0.6': {}
+
+  '@types/node@22.13.13':
+    dependencies:
+      undici-types: 6.20.0
 
   acorn@8.14.1: {}
 
@@ -559,6 +591,10 @@ snapshots:
       fill-range: 7.1.1
 
   buffer-from@1.1.2: {}
+
+  clean-css@5.3.3:
+    dependencies:
+      source-map: 0.6.1
 
   commander@2.20.3: {}
 
@@ -789,6 +825,8 @@ snapshots:
   tslib@2.8.1: {}
 
   typescript@5.8.2: {}
+
+  undici-types@6.20.0: {}
 
   unicorn-magic@0.3.0: {}
 
