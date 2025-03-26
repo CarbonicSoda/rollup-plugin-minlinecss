@@ -1,15 +1,16 @@
 {
-	"name": "rollup-plugin-mcss",
+	"name": "rollup-plugin-minlinecss",
 	"author": "CarbonicSoda",
 	"version": "1.0.0",
-	"description": "Minify CSS String Templates",
+	"description": "Minify Inline CSS String Templates",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/CarbonicSoda/rollup-plugin-mcss"
+		"url": "https://github.com/CarbonicSoda/rollup-plugin-minlinecss"
 	},
 	"keywords": [
 		"rollup-plugin",
+		"inline",
 		"css",
 		"string-template",
 		"minify"

@@ -3,10 +3,13 @@ import { Plugin } from "rollup";
 import CleanCSS from "clean-css";
 import MagicString from "magic-string";
 
-//MO TODO add jsdocs
-export default function mcss(): Plugin {
+/**
+ * Plugin to minify inline CSS string templates
+ * @returns The plugin instance
+ */
+export default function minlinecss(): Plugin {
 	return {
-		name: "mcss",
+		name: "minlinecss",
 		transform(code, id) {
 			if (!/.+\.(?:jsx?|tsx?|cjs|mjs)$/.test(id)) return null;
 

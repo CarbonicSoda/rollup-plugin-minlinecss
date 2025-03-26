@@ -8,13 +8,13 @@ Install this package in your project:
 
 ```bash
 # via npm
-npm add rollup-plugin-mcss
+npm add rollup-plugin-minlinecss
 
 # or pnpm
-pnpm add rollup-plugin-mcss
+pnpm add rollup-plugin-minlinecss
 
 # or yarn
-yarn add rollup-plugin-mcss
+yarn add rollup-plugin-minlinecss
 ```
 
 To instruct the plugin to minify inline CSS, add `##` next to the enclosing
@@ -33,8 +33,8 @@ const Icon = styled("div")`##
 
 // with selectors
 document.head.insertAdjacentHTML(
-  "beforeend",
-  `<style>${`##
+	"beforeend",
+	`<style>${`##
 
     .global {
         ...
@@ -52,7 +52,7 @@ const Colored = styled("div")`##
 
 ##`;
 
-// in fact, it works with ANY templates with CSS
+// in fact, it works with ANY templates of CSS
 ```
 
 > Use with caution: This plugin relies on RegExp but not AST to match template
