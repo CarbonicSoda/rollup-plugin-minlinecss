@@ -1,13 +1,34 @@
+import {
+	CustomAtRules,
+	Features,
+	transform,
+	TransformOptions,
+} from "lightningcss";
+import { default as MagicString } from "magic-string";
 import { Plugin } from "rollup";
 
-import CleanCSS from "clean-css";
-import MagicString from "magic-string";
-
+//MO TODO docs
 /**
  * Plugin to minify inline CSS string templates
  * @returns The plugin instance
  */
-export default function minlinecss(): Plugin {
+export default function minlinecss(
+	options: {
+		endSemi?: boolean;
+		lightningcss?: Omit<
+			TransformOptions<CustomAtRules>,
+			| "code"
+			| "cssModules"
+			| "filename"
+			| "inputSourceMap"
+			| "minify"
+			| "projectRoot"
+			| "sourceMap"
+		>;
+	} = {
+		endSemi: true,
+	},
+): Plugin {
 	return {
 		name: "minlinecss",
 		transform(code, id) {
@@ -19,17 +40,39 @@ export default function minlinecss(): Plugin {
 				const start = match.index;
 				const end = start + match[0].length;
 
-				const css = match[0].slice(3, -3);
-				const min = new CleanCSS({
-					level: {
-						2: {
-							all: true,
-						},
-					},
-				})
-					.minify(`-{${css.replaceAll(/\${.+?}/g, '"$&"')}}`)
-					.styles.slice(2, -1)
-					.replaceAll(/"\${.+?}"/g, (wrapper) => wrapper.slice(1, -1));
+				let css = match[0].slice(3, -3);
+
+				let sub;
+				const subs: string[] = [];
+				let i = 0;
+				while ((sub = /\${.+?}/g.exec(css))) {
+					subs.push(sub[0]);
+					css =
+						`--minlinecss-sub-${i}:;` +
+						css.slice(0, sub.index) +
+						`var(--minlinecss-sub-${i})` +
+						css.slice(sub.index + sub[0].length);
+					i++;
+				}
+
+				let min = new TextDecoder()
+					.decode(
+						transform({
+							filename: "style.css",
+							code: new TextEncoder().encode(`*{${css}}`),
+							minify: true,
+							exclude: Features.Nesting | (options?.lightningcss?.exclude ?? 0),
+							...options?.lightningcss,
+						}).code,
+					)
+					.replaceAll(/(?<={|}|;)& /g, "")
+					.slice(2, -1);
+
+				if (options.endSemi && !min.endsWith("}")) min += ";";
+
+				min = min
+					.replaceAll(/var\(--minlinecss-sub-(\d+)\)/g, (_, i) => subs[+i])
+					.replaceAll(/--minlinecss-sub-\d+:;/g, "");
 
 				src.update(start, end, `\`${min}\``);
 			}

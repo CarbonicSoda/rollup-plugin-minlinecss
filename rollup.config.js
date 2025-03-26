@@ -17,7 +17,7 @@ export default [
 			}),
 			terser(),
 		],
-		external: ["magic-string", "clean-css"],
+		external: ["magic-string", "lightningcss"],
 	},
 	{
 		input: "src/index.ts",
@@ -32,7 +32,7 @@ export default [
 			}),
 			terser(),
 		],
-		external: ["magic-string", "clean-css"],
+		external: ["magic-string", "lightningcss"],
 	},
 	{
 		input: "dist/types/index.d.ts",

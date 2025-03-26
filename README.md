@@ -1,3 +1,4 @@
+<!-- MO TODO rewrite -->
 A very basic Rollup plugin to minify CSS in string templates, for users of
 inline CSS packages e.g. [Goober](https://github.com/cristianbote/goober) or
 [Styled JSX](https://github.com/vercel/styled-jsx).
@@ -24,7 +25,7 @@ Add the plugin to your Rollup config:
 import minlinecss from "rollup-plugin-minlinecss";
 
 export default {
-	plugins: [minlinecss()]
+	plugins: [minlinecss()],
 };
 ```
 
@@ -69,7 +70,7 @@ const Colored = styled("div")`##
 > Use with caution: The plugin relies on RegExp but not AST to match template
 > strings, so there's no guarantee. However, this is usually safe.
 
-> The plugin uses [Clean CSS](https://github.com/clean-css/clean-css) with level
-> 2 minification.
+> The plugin uses
+> [Lightning CSS](https://github.com/parcel-bundler/lightningcss).
 
 Have fun with this stupid little plugin.
