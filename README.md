@@ -8,13 +8,13 @@ Install this package in your project:
 
 ```bash
 # via npm
-npm add rollup-plugin-minlinecss
+npm add -D rollup-plugin-minlinecss
 
 # or pnpm
-pnpm add rollup-plugin-minlinecss
+pnpm add -D rollup-plugin-minlinecss
 
 # or yarn
-yarn add rollup-plugin-minlinecss
+yarn add -D rollup-plugin-minlinecss
 ```
 
 To instruct the plugin to minify inline CSS, add `##` next to the enclosing
