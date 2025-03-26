@@ -17,6 +17,17 @@ pnpm add -D rollup-plugin-minlinecss
 yarn add -D rollup-plugin-minlinecss
 ```
 
+Add the plugin to your Rollup config:
+
+```mjs
+// rollup.config.mjs
+import minlinecss from "rollup-plugin-minlinecss";
+
+export default {
+	plugins: [minlinecss()]
+};
+```
+
 To instruct the plugin to minify inline CSS, add `##` next to the enclosing
 backticks of the string template:
 
@@ -55,10 +66,12 @@ const Colored = styled("div")`##
 // in fact, it works with ANY templates of CSS
 ```
 
-> Use with caution: This plugin relies on RegExp but not AST to match template
+> Use with caution: The plugin relies on RegExp but not AST to match template
 > strings, so there's no guarantee. However, this is usually safe.
 
-> This plugin uses [Clean CSS](https://github.com/clean-css/clean-css) with
-> level 2 minification.
+> The plugin uses [Clean CSS](https://github.com/clean-css/clean-css) with level
+> 2 minification.
+
+> The plugin will not minify on watch mode.
 
 Have fun with this stupid little plugin.
