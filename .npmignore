@@ -1,0 +1,7 @@
+.gitattributes
+.prettierrc
+.vscode
+dist/types
+rollup.config.js
+src
+tsconfig.json
