@@ -29,7 +29,7 @@ export default function minlinecss(): Plugin {
 				})
 					.minify(`-{${css.replaceAll(/\${.+?}/g, '"$&"')}}`)
 					.styles.slice(2, -1)
-					.replaceAll(/"\${.+?}"/g, (m) => m.slice(1, -1));
+					.replaceAll(/"\${.+?}"/g, (wrapper) => wrapper.slice(1, -1));
 
 				src.update(start, end, `\`${min}\``);
 			}
