@@ -72,6 +72,4 @@ const Colored = styled("div")`##
 > The plugin uses [Clean CSS](https://github.com/clean-css/clean-css) with level
 > 2 minification.
 
-> The plugin will not minify on watch mode.
-
 Have fun with this stupid little plugin.
