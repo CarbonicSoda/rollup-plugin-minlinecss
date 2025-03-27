@@ -28,8 +28,6 @@ export default {
 };
 ```
 
-> Recommended to put before minimizers like Terser for best outcome.
-
 > Available plugin options are given in [plugin options](#options).
 
 The plugin can minify any string templates that contain CSS:

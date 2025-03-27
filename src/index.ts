@@ -35,8 +35,11 @@ type MinlineCssOptions = {
 export default function minlinecss(options?: MinlineCssOptions): Plugin {
 	return {
 		name: "minlinecss",
-		transform(src, file) {
-			return minifyInlineCss(src, file, options);
+		transform: {
+			order: "pre",
+			handler(src, file) {
+				return minifyInlineCss(src, file, options);
+			},
 		},
 	};
 }
