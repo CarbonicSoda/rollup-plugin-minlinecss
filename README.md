@@ -33,7 +33,7 @@ export default {
 The plugin can minify any string templates that contain CSS:
 
 ```ts
-// example.ts
+// works-with.ts
 
 // with selectors
 const globalStyles = `
@@ -66,14 +66,17 @@ const Colored = styled("div")`
 // but the plugin will work without it too
 ```
 
+> The plugin keeps all ending semi-colons, even if they are not technically
+> needed, for compatability with mainstream packages.
+
 ### Options
 
-> With full TypeScript typing & autocompletion support.
+> With full TypeScript typing and autocompletion support.
 
-| Property       | Description                                                                                                                                                                                     |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| _exclude_      | Files to exclude from minification, for cases that the plugin _somehow_ broke certain code.<br><br>This is usually not required because the plugin will skip template strings that are not CSS. |
-| _lightningcss_ | [LightningCSS](https://github.com/parcel-bundler/lightningcss) options, for e.g. browser compatibility, do note that CSS nesting is always enabled.                                             |
+| Property       | Description                                                                                                                                                                                                                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _exclude_      | Files to exclude from minification, for cases that the plugin _somehow_ broke certain code.<br><br>This is usually not required because the plugin will skip template strings that are not CSS. Though a possible case is if you included sensitive symbols in CSS string values, e.g. `content: "{}";` due to the use of RegExp but not AST. |
+| _lightningcss_ | [LightningCSS](https://github.com/parcel-bundler/lightningcss) options, for e.g. browser compatibility, do note that CSS nesting is always enabled.                                                                                                                                                                                           |
 
 ---
 

@@ -40,7 +40,7 @@ describe("minify test", () => {
 				}
 			\`
 			`,
-			"`.test{color:pink}.test2:hover{all:initial}`",
+			"`.test{color:pink;}.test2:hover{all:initial;}`",
 		);
 
 		run(
@@ -54,7 +54,7 @@ describe("minify test", () => {
 				}
 			\`
 			`,
-			"`color:pink;border:1em;&:hover{color:#000}`",
+			"`color:pink;border:1em;&:hover{color:#000;}`",
 		);
 	});
 
@@ -70,7 +70,7 @@ describe("minify test", () => {
 				}
 			\`
 			`,
-			'`content:${"`"};color:${"pink"};&:${"hover"}{color:#000}`',
+			'`content:${"`"};color:${"pink"};&:${"hover"}{color:#000;}`',
 		);
 	});
 
