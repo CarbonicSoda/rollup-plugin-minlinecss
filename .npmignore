@@ -2,6 +2,8 @@
 .prettierrc
 .vscode
 dist/types
+jest.config.cjs
 rollup.config.js
 src
+tests
 tsconfig.json
