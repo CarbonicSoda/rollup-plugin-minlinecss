@@ -19,12 +19,12 @@ yarn add -D rollup-plugin-minlinecss
 
 Add the plugin to your Rollup config:
 
-```mjs
-// rollup.config.mjs
+```js
+// rollup.config.js
 import minlinecss from "rollup-plugin-minlinecss";
 
 export default {
-	plugins: [minlinecss()],
+  plugins: [minlinecss()],
 };
 ```
 
