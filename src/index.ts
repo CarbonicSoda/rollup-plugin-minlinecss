@@ -62,7 +62,9 @@ function minifyInlineCss(
 	const result = new MagicString(src);
 
 	//MO DOC match candidate string templates
-	for (const templateMatch of src.matchAll(/`.+?:.+?;.*?`/gs)) {
+	let offset = 0;
+	let templateMatch!: RegExpExecArray | null;
+	while ((templateMatch = /`.+?:.+?;.*?`/gs.exec(src))) {
 		const template = templateMatch[0];
 		const startPos = templateMatch.index;
 		const endPos = startPos + template.length;
@@ -108,7 +110,9 @@ function minifyInlineCss(
 			}).code;
 			min = new TextDecoder().decode(minBuffer);
 		} catch {
-			//MO DOC ignore invalid css template
+			//MO DOC ignore invalid css template and retry
+			src = src.slice(endPos - 1);
+			offset += endPos - 1;
 			continue;
 		}
 
@@ -127,7 +131,11 @@ function minifyInlineCss(
 			.replaceAll(/--minlinecss-sub-\d+?:;/g, "");
 
 		//MO DOC replace template with minified
-		result.update(startPos, endPos, `\`${min}\``);
+		result.update(startPos + offset, endPos + offset, `\`${min}\``);
+
+		//MO DOC proceed to next match
+		src = src.slice(endPos);
+		offset += endPos;
 	}
 
 	//MO DOC return minified code and updated source map

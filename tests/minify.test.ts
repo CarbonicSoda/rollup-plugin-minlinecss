@@ -95,4 +95,8 @@ describe("minify test", () => {
 			\``,
 		);
 	});
+
+	test("edge case", () => {
+		run(`\`a\`a:a;\`color:    \${color};\``, `\`a\`a:a;\`color:\${color};\``);
+	});
 });
