@@ -4,83 +4,132 @@ import {
 	transform,
 	TransformOptions,
 } from "lightningcss";
-import { default as MagicString } from "magic-string";
+import { default as MagicString, SourceMap } from "magic-string";
 import { Plugin } from "rollup";
 
-//MO TODO docs
+type MinlineCssOptions = {
+	exclude?: string[];
+	lightningcss?: Omit<
+		TransformOptions<CustomAtRules>,
+		| "code"
+		| "cssModules"
+		| "filename"
+		| "inputSourceMap"
+		| "minify"
+		| "projectRoot"
+		| "sourceMap"
+	>;
+};
+
 /**
  * Plugin to minify inline CSS string templates
+ *
+ * @param options.exclude files to exclude from minification,
+ * for cases that the plugin somehow broke certain code.
+ *
+ * @param options.lightningcss [lightningcss](https://github.com/parcel-bundler/lightningcss) options,
+ * for e.g. browser compatibility, do note that CSS nesting is always enabled.
+ *
  * @returns The plugin instance
  */
-export default function minlinecss(
-	options: {
-		endSemi?: boolean;
-		lightningcss?: Omit<
-			TransformOptions<CustomAtRules>,
-			| "code"
-			| "cssModules"
-			| "filename"
-			| "inputSourceMap"
-			| "minify"
-			| "projectRoot"
-			| "sourceMap"
-		>;
-	} = {
-		endSemi: true,
-	},
-): Plugin {
+export default function minlinecss(options?: MinlineCssOptions): Plugin {
 	return {
 		name: "minlinecss",
-		transform(code, id) {
-			if (!/.+\.(?:jsx?|tsx?|cjs|mjs)$/.test(id)) return null;
-
-			const src = new MagicString(code);
-
-			for (const match of code.matchAll(/`##.+?##`/gs)) {
-				const start = match.index;
-				const end = start + match[0].length;
-
-				let css = match[0].slice(3, -3);
-
-				let sub;
-				const subs: string[] = [];
-				let i = 0;
-				while ((sub = /\${.+?}/g.exec(css))) {
-					subs.push(sub[0]);
-					css =
-						`--minlinecss-sub-${i}:;` +
-						css.slice(0, sub.index) +
-						`var(--minlinecss-sub-${i})` +
-						css.slice(sub.index + sub[0].length);
-					i++;
-				}
-
-				let min = new TextDecoder()
-					.decode(
-						transform({
-							filename: "style.css",
-							code: new TextEncoder().encode(`*{${css}}`),
-							minify: true,
-							exclude: Features.Nesting | (options?.lightningcss?.exclude ?? 0),
-							...options?.lightningcss,
-						}).code,
-					)
-					.replaceAll(/(?<={|}|;)& /g, "")
-					.slice(2, -1);
-
-				if (options.endSemi && !min.endsWith("}")) min += ";";
-
-				min = min
-					.replaceAll(/var\(--minlinecss-sub-(\d+)\)/g, (_, i) => subs[+i])
-					.replaceAll(/--minlinecss-sub-\d+:;/g, "");
-
-				src.update(start, end, `\`${min}\``);
-			}
-
-			return {
-				code: src.toString(),
-				map: src.generateMap(),
-			};
+		transform(src, file) {
+			return minifyInlineCss(src, file, options);
 		},
+	};
+}
+
+//MO DEV export for tests
+function minifyInlineCss(
+	src: string,
+	file: string,
+	options?: MinlineCssOptions,
+): null | { code: string; map: SourceMap } {
+	//MO DOC file exclusion
+	if (
+		options?.exclude?.includes(file) ||
+		!/\.(?:cjs|mjs|jsx?|tsx?)$/.test(file)
+	) {
+		return null;
+	}
+
+	//MO DOC for source maps
+	const result = new MagicString(src);
+
+	//MO DOC match candidate string templates
+	for (const templateMatch of src.matchAll(/`.+?:.+?;.*?`/gs)) {
+		const template = templateMatch[0];
+		const startPos = templateMatch.index;
+		const endPos = startPos + template.length;
+
+		//MO DOC might not be valid css template
+		let candidCss = template.slice(1, -1);
+
+		let subIndex = 0;
+		const subValues: string[] = [];
+		let subMatch!: RegExpExecArray | null;
+		while ((subMatch = /\${.+?}/gs.exec(candidCss))) {
+			const subValue = subMatch[0];
+			const startPos = subMatch.index;
+			const endPos = startPos + subValue.length;
+
+			subValues.push(subValue);
+
+			//MO DOC replace substitutions to get valid css
+			const replacerVar = `--minlinecss-sub-${subIndex}`;
+			candidCss = `${replacerVar}:;${candidCss.slice(
+				0,
+				startPos,
+			)}var(${replacerVar})${candidCss.slice(endPos)}`;
+
+			subIndex++;
+		}
+
+		//MO DOC if css omits selectors, wrap to get valid css
+		const isProps = /(?:^[^{]*?:[^{]*?;)|(?:^\s*?&)/s.test(candidCss);
+		if (isProps) candidCss = `*{${candidCss}}`;
+
+		let min!: string;
+
+		//MO DOC minify with lightningcss
+		const candidBuffer = new TextEncoder().encode(candidCss);
+		try {
+			const minBuffer = transform({
+				...options?.lightningcss,
+				minify: true,
+				code: candidBuffer,
+				filename: candidCss,
+				exclude: Features.Nesting | (options?.lightningcss?.exclude ?? 0),
+			}).code;
+			min = new TextDecoder().decode(minBuffer);
+		} catch {
+			//MO DOC ignore invalid css template
+			continue;
+		}
+
+		//MO DOC unwrap and add ending semi for isProp styles
+		if (isProps) {
+			min = min.slice(2, -1);
+			if (!min.endsWith("}")) min += ";";
+		}
+
+		//MO DOC undo substitution replacement
+		min = min
+			.replaceAll(
+				/var\(--minlinecss-sub-(\d+?)\)/g,
+				(_, subIndex) => subValues[subIndex],
+			)
+			.replaceAll(/--minlinecss-sub-\d+?:;/g, "");
+
+		//MO DOC replace template with minified
+		result.update(startPos, endPos, `\`${min}\``);
+	}
+
+	//MO DOC return minified code and updated source map
+	return {
+		code: result.toString(),
+		map: result.generateMap(),
 	};
 }

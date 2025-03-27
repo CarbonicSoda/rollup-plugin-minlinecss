@@ -1,6 +1,5 @@
-<!-- MO TODO rewrite -->
 A very basic Rollup plugin to minify CSS in string templates, for users of
-inline CSS packages e.g. [Goober](https://github.com/cristianbote/goober) or
+inline CSS packages e.g. [Goober](https://github.com/cristianbote/goober) and
 [Styled JSX](https://github.com/vercel/styled-jsx).
 
 ### Usage
@@ -29,48 +28,55 @@ export default {
 };
 ```
 
-To instruct the plugin to minify inline CSS, add `##` next to the enclosing
-backticks of the string template:
+> Recommended to put before minimizers like Terser for best outcome.
+
+> Available plugin options are given in [plugin options](#options).
+
+The plugin can minify any string templates that contain CSS:
 
 ```ts
-// demo.ts
-
-// for single elements
-const Icon = styled("div")`##
-
-  color: white;
-  ...
-
-##`;
+// example.ts
 
 // with selectors
-document.head.insertAdjacentHTML(
-	"beforeend",
-	`<style>${`##
+const globalStyles = `
+  .example {
+      ...
+  }
+  ...
+`;
 
-    .global {
-        ...
-    }
-    ...
-
-  ##`}</style>`,
-);
+// without selectors
+const Icon = styled("div")`
+  color: white;
+  ...
+`;
 
 // with template substitutions
-const Colored = styled("div")`##
-
+const Dynamic = styled("div")`
+  .${class} {
+    color: ${color};
+    ...
+  }
+  ...
+`;
+const Colored = styled("div")`
   color: ${color};
   ...
+`;
 
-##`;
-
-// in fact, it works with ANY templates of CSS
+// the method styled() came from Goober for demonstration
+// but the plugin will work without it too
 ```
 
-> Use with caution: The plugin relies on RegExp but not AST to match template
-> strings, so there's no guarantee. However, this is usually safe.
+### Options
 
-> The plugin uses
-> [Lightning CSS](https://github.com/parcel-bundler/lightningcss).
+> With full TypeScript typing & autocompletion support.
+
+| Property       | Description                                                                                                                                                                                     |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| _exclude_      | Files to exclude from minification, for cases that the plugin _somehow_ broke certain code.<br><br>This is usually not required because the plugin will skip template strings that are not CSS. |
+| _lightningcss_ | [LightningCSS](https://github.com/parcel-bundler/lightningcss) options, for e.g. browser compatibility, do note that CSS nesting is always enabled.                                             |
+
+---
 
 Have fun with this stupid little plugin.
