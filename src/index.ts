@@ -122,7 +122,7 @@ function minifyInlineCss(
 			if (!min.endsWith("}")) min += ";";
 		}
 		//MO DOC add ending semi for nested blocks
-		min = min.replaceAll(/(?<![};])\s*?}/g, ";}");
+		min = min.replaceAll(/(?<![ };])}/g, ";}");
 
 		//MO DOC undo substitution replacement
 		min = min
