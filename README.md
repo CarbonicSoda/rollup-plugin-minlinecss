@@ -24,7 +24,7 @@ Add the plugin to your Rollup config:
 import minlinecss from "rollup-plugin-minlinecss";
 
 export default {
-  plugins: [minlinecss()],
+  plugins: [minlinecss()]
 };
 ```
 
@@ -35,35 +35,36 @@ The plugin can minify any string templates that contain CSS:
 ```ts
 // works-with.ts
 
-// with selectors
+// with top-level selectors
 const globalStyles = `
-  .example {
-      ...
+  div:hover {
+    color: blue;
   }
-  ...
+  .example {
+    color: red;
+    & a {
+      color: white;
+    }
+  }
 `;
 
-// without selectors
+// no top-level selectors (block styles)
 const Icon = styled("div")`
   color: white;
-  ...
+  &:hover {
+    color: red;
+  }
 `;
 
 // with template substitutions
 const Dynamic = styled("div")`
   .${class} {
     color: ${color};
-    ...
   }
-  ...
-`;
-const Colored = styled("div")`
-  color: ${color};
-  ...
 `;
 
 // the method styled() came from Goober for demonstration
-// but the plugin will work without it too
+// the plugin will work without it too
 ```
 
 > The plugin keeps all ending semi-colons, even if they are not technically
@@ -76,7 +77,7 @@ const Colored = styled("div")`
 | Property       | Description                                                                                                                                                                                                                                                                                                                                                                                           |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | _exclude_      | Files to exclude from minification, for cases that the plugin _somehow_ broke certain code.<br><br>This is usually not required because the plugin will skip template strings that are not CSS. Though a possible case is if you included sensitive symbols in CSS string values, e.g. `content: "}"` will become `content:";}"` (ending semi-colon insertion), due to the use of RegExp but not AST. |
-| _lightningcss_ | [LightningCSS](https://github.com/parcel-bundler/lightningcss) options, for e.g. browser compatibility, do note that CSS nesting is always enabled.                                                                                                                                                                                                                                                   |
+| _lightningcss_ | [LightningCSS](https://github.com/parcel-bundler/lightningcss) options, for browser compatibility etc., do note that the feature flag CSS nesting is always enabled.                                                                                                                                                                                                                                  |
 
 ---
 
