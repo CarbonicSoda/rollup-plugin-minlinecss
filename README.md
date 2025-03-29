@@ -24,7 +24,7 @@ Add the plugin to your Rollup config:
 import minlinecss from "rollup-plugin-minlinecss";
 
 export default {
-  plugins: [minlinecss()]
+  plugins: [minlinecss()],
 };
 ```
 
@@ -69,6 +69,9 @@ const Dynamic = styled("div")`
 
 > The plugin keeps all ending semi-colons, even if they are not technically
 > needed, for compatability with mainstream packages.
+
+> The plugin will TRY to minimize as much as it can, but due to the reliance on
+> RegExp but not AST, it WILL miss some.
 
 ### Options
 
