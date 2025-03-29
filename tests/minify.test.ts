@@ -62,7 +62,7 @@ describe("minify test", () => {
 		run(
 			`
 			\`
-				content: \${"\`"};
+				content: \${">\`"};
 				color: \${"pink"};
 
 				&:\${"hover"} {
@@ -70,7 +70,7 @@ describe("minify test", () => {
 				}
 			\`
 			`,
-			'`content:${"`"};color:${"pink"};&:${"hover"}{color:#000;}`',
+			'`content:${">\`"};color:${"pink"};&:${"hover"}{color:#000;}`',
 		);
 	});
 

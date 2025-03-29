@@ -64,7 +64,7 @@ function minifyInlineCss(
 	//MO DOC match candidate string templates
 	let offset = 0;
 	let templateMatch!: RegExpExecArray | null;
-	while ((templateMatch = /`[^`]+?:[^`]+?;[^`]*?`/gs.exec(src))) {
+	while ((templateMatch = /`.+?:.+?;.*?`/gs.exec(src))) {
 		const template = templateMatch[0];
 		const startPos = templateMatch.index;
 		const endPos = startPos + template.length;
