@@ -1,13 +1,14 @@
 # DEPRECATED
 
-This package is DEPRECATED and you shall not try to use it.
+This package is deprecated and you shall not try to use it.
 
 I decided that this is simply not worth all the effort and time, and won't bother with reworking on
 it anymore.
 
-This is primarily due to the lack of support for minifying bare css properties among minifiers like
-lightningcss or nanocss. I had to wrap them in dummy selectors, manually replace the templates, and
-later trim the wrappers. It is too awkward and sophisticated.
+This is primarily due to the lack of support for minifying bare css blocks among minifiers like
+lightningcss or nanocss (csso did support this, but it is dead for years and doesn't support css
+nesting). I had to wrap them in dummy selectors, manually replace the templates, and later trim the
+wrappers. It is too awkward and sophisticated.
 
 And all this just to save a few bytes? No.
 
