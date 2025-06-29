@@ -1,5 +1,20 @@
-A very basic Rollup plugin to minify CSS in string templates, for users of
-inline CSS packages e.g. [Goober](https://github.com/cristianbote/goober) and
+# DEPRECATED
+
+This package is DEPRECATED and you shall not try to use it.
+
+I decided that this is simply not worth all the effort and time, and won't bother with reworking on
+it anymore.
+
+This is primarily due to the lack of support for minifying bare css properties among minifiers like
+lightningcss or nanocss. I had to wrap them in dummy selectors, manually replace the templates, and
+later trim the wrappers. It is too awkward and sophisticated.
+
+And all this just to save a few bytes? No.
+
+---
+
+A very basic Rollup plugin to minify CSS in string templates, for users of inline CSS packages e.g.
+[Goober](https://github.com/cristianbote/goober) and
 [Styled JSX](https://github.com/vercel/styled-jsx).
 
 ### Usage
@@ -24,7 +39,7 @@ Add the plugin to your Rollup config:
 import minlinecss from "rollup-plugin-minlinecss";
 
 export default {
-  plugins: [minlinecss()],
+        plugins: [minlinecss()],
 };
 ```
 
@@ -67,11 +82,11 @@ const Dynamic = styled("div")`
 // the plugin will work without it too
 ```
 
-> The plugin keeps all ending semi-colons, even if they are not technically
-> needed, for compatability with mainstream packages.
+> The plugin keeps all ending semi-colons, even if they are not technically needed, for
+> compatability with mainstream packages.
 
-> The plugin will TRY to minimize as much as it can, but due to the reliance on
-> RegExp but not AST, it WILL miss some.
+> The plugin will TRY to minimize as much as it can, but due to the reliance on RegExp but not AST,
+> it WILL miss some.
 
 ### Options
 

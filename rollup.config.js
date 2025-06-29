@@ -1,7 +1,8 @@
-import terser from "@rollup/plugin-terser";
-import deleter from "rollup-plugin-delete";
-import dts from "rollup-plugin-dts";
-import typescript2 from "rollup-plugin-typescript2";
+import resolvePlugin from "@rollup/plugin-node-resolve";
+import terserPlugin from "@rollup/plugin-terser";
+import deletePlugin from "rollup-plugin-delete";
+import dtsPlugin from "rollup-plugin-dts";
+import ts2Plugin from "rollup-plugin-typescript2";
 
 export default [
 	{
@@ -10,14 +11,18 @@ export default [
 			file: "dist/index.esm.js",
 			format: "esm",
 		},
+		external: [/^acorn/, /^escodegen/, "lightningcss"],
+
 		plugins: [
-			deleter({ targets: "dist/" }),
-			typescript2({
+			deletePlugin({ targets: "dist/" }),
+
+			ts2Plugin({
 				useTsconfigDeclarationDir: true,
 			}),
-			terser(),
+			resolvePlugin(),
+
+			// terserPlugin(),
 		],
-		external: ["magic-string", "lightningcss"],
 	},
 	{
 		input: "src/index.ts",
@@ -25,18 +30,25 @@ export default [
 			file: "dist/index.js",
 			format: "cjs",
 		},
-		watch: false,
+		external: [/^acorn/],
+
 		plugins: [
-			typescript2({
+			ts2Plugin({
 				useTsconfigDeclarationDir: true,
 			}),
-			terser(),
+			resolvePlugin(),
+
+			terserPlugin(),
 		],
-		external: ["magic-string", "lightningcss"],
+		watch: false,
 	},
+
 	{
 		input: "dist/types/index.d.ts",
 		output: [{ file: "dist/index.d.ts", format: "es" }],
-		plugins: [dts()],
+		external: [/^acorn/],
+
+		plugins: [dtsPlugin()],
+		watch: true,
 	},
 ];

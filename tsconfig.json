@@ -1,21 +1,20 @@
 {
+	"include": ["src/**/*", "index.mjs"],
+
 	"compilerOptions": {
-		"outDir": "dist",
+		"strict": true,
+
 		"target": "ESNext",
 		"module": "ESNext",
-		"declaration": true,
-		"declarationDir": "./dist/types",
+
 		"moduleResolution": "bundler",
-		"noEmit": true,
-		"sourceMap": true,
 		"isolatedModules": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
-		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-		"types": ["jest"]
-	},
-	"include": ["src/**/*"]
+
+		"noEmit": true,
+		"sourceMap": true,
+		"declaration": true,
+		"declarationDir": "./dist/types"
+	}
 }
