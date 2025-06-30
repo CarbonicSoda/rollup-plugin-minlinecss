@@ -8,7 +8,7 @@ it anymore.
 This is primarily due to the lack of support for minifying bare css blocks among minifiers like
 lightningcss or nanocss (csso did support this, but it is dead for years and doesn't support css
 nesting). I had to wrap them in dummy selectors, manually replace the templates, and later trim the
-wrappers. It is too awkward and sophisticated.
+wrappers. It is too awkward and sophisticated. It is also very error prone.
 
 And all this just to save a few bytes? No.
 
